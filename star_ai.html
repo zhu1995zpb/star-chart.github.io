@@ -1222,6 +1222,7 @@ class Camera {
   // 避免逐星构造对象：直接传分量；与着色器同一套投影
   // 球极模式允许背面点（投影到屏幕外后由调用方裁剪）；透视模式仍要求在前方
   projectXYZ(x, y, z, w, h) {
+    if (x * x + y * y + z * z < 1e-12) return null;   // 零向量（无锚点）不投影
     const { right, up, back } = this.basis();
     const cx = x * right.x + y * right.y + z * right.z;
     const cy = x * up.x + y * up.y + z * up.z;
